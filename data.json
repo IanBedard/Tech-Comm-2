@@ -1,0 +1,200 @@
+{
+    "2025-02-01-unique": {
+      "title": "Extension to basic pay and leave without pay transactions in Time and Labour for pay period 2",
+      "category": "For information",
+      "datePublished": "2025-02-01",
+      "audience": [
+        "Change agents",
+        "Compensation advisors (CAs)",
+        "Section 33 authorizers",
+        "Section 34 managers"
+      ],
+      "whatYouNeedToKnow": [
+        "Public Services and Procurement Canada (PSPC) would like to inform the community that there will be an extension to the approval of basic pay (or equivalent) and leave without pay (LWOP) transactions in Time and Labour.",
+        "The following changes have been made to the transactions for pay period 2:",
+        "The cut-off for Section 34 managers approval will be 12:00 pm (ET) on Wednesday, January 22, 2025.",
+        "The cut-off for Section 33 authorization will be 4:00 pm (ET) on Wednesday, January 22, 2025."
+      ],
+      "actionRequired": [
+        "Ensure all approvals are completed by the specified deadlines.",
+        "Communicate any issues to the relevant department.",
+        "Verify all entries before submission."
+      ],
+      "notes": [
+        "This extension is a temporary measure.",
+        "Further updates will be provided as necessary.",
+        "Check the internal portal for more information."
+      ],
+      "resources": [
+        {
+          "href": "https://gcintranet.tpsgc-pwgsc.gc.ca/remuneration-compensation/calendrier-schedule/2025-eng.html",
+          "title": "Pay processing schedule – Year 2025"
+        },
+        {
+          "href": "https://example.com/resource2",
+          "title": "Additional Resource 2"
+        }
+      ],
+      "whoToContact": [
+        {
+          "href": "https://gcintranet.tpsgc-pwgsc.gc.ca/remuneration-compensation/soutien-support-eng.html",
+          "title": "Who to contact for pay system support"
+        },
+        {
+          "href": "https://example.com/contact2",
+          "title": "Secondary Contact"
+        }
+      ],
+      "shareableLink": {
+        "href": "?entry=2025-02-01-unique",
+        "title": "Share this link"
+      }
+    },
+    "2024-11-20-unique": {
+      "title": "Introduction to New Fiscal Policies",
+      "category": "Finance",
+      "datePublished": "2024-11-20",
+      "audience": [
+        "Finance team",
+        "Executives"
+      ],
+      "whatYouNeedToKnow": [
+        "New fiscal policies will be implemented starting from January 1, 2025.",
+        "These policies aim to streamline budget allocations across departments."
+      ],
+      "actionRequired": [
+        "Attend the policy briefing session by December 10, 2024.",
+        "Review and align departmental budgets accordingly."
+      ],
+      "notes": [
+        "Detailed policy documents will be available on the intranet.",
+        "Feedback can be submitted through the finance portal."
+      ],
+      "resources": [
+        {
+          "href": "https://example.com/new-fiscal-policies",
+          "title": "Fiscal Policy Documents"
+        }
+      ],
+      "whoToContact": [
+        {
+          "href": "https://example.com/finance-contact",
+          "title": "Finance Department"
+        }
+      ],
+      "shareableLink": {
+        "href": "?entry=2024-11-20-unique",
+        "title": "Share this link"
+      }
+    },
+    "2023-09-15-unique": {
+      "title": "Launch of New Employee Training Portal",
+      "category": "Training",
+      "datePublished": "2023-09-15",
+      "audience": [
+        "All employees",
+        "HR managers"
+      ],
+      "whatYouNeedToKnow": [
+        "A new training portal will be launched to enhance employee learning opportunities.",
+        "It features a wide range of courses and certifications available online."
+      ],
+      "actionRequired": [
+        "Register on the portal by October 1, 2023.",
+        "Complete the mandatory onboarding course by October 15, 2023."
+      ],
+      "notes": [
+        "Access to the portal will be provided via email.",
+        "For any login issues, please contact IT support."
+      ],
+      "resources": [
+        {
+          "href": "https://example.com/training-portal",
+          "title": "Training Portal"
+        }
+      ],
+      "whoToContact": [
+        {
+          "href": "https://example.com/hr-contact",
+          "title": "HR Department"
+        }
+      ],
+      "shareableLink": {
+        "href": "?entry=2023-09-15-unique",
+        "title": "Share this link"
+      }
+    },
+    "2022-06-10-unique": {
+      "title": "Mid-Year Performance Review Updates",
+      "category": "HR Announcement",
+      "datePublished": "2022-06-10",
+      "audience": [
+        "All employees",
+        "Managers"
+      ],
+      "whatYouNeedToKnow": [
+        "Performance reviews have been updated to include new evaluation criteria.",
+        "Ensure to submit your self-assessment by the due date."
+      ],
+      "actionRequired": [
+        "Prepare self-assessment by June 20, 2022.",
+        "Managers to complete evaluations by June 30, 2022."
+      ],
+      "notes": [
+        "New criteria details are available on the HR portal.",
+        "Contact your HR manager for any assistance."
+      ],
+      "resources": [
+        {
+          "href": "https://example.com/performance-review-updates",
+          "title": "Performance Review Guide"
+        }
+      ],
+      "whoToContact": [
+        {
+          "href": "https://example.com/hr-contact",
+          "title": "HR Department"
+        }
+      ],
+      "shareableLink": {
+        "href": "?entry=2022-06-10-unique",
+        "title": "Share this link"
+      }
+    },
+    "2021-05-05-unique": {
+      "title": "Cybersecurity Awareness Month Kickoff",
+      "category": "Security",
+      "datePublished": "2021-05-05",
+      "audience": [
+        "All employees"
+      ],
+      "whatYouNeedToKnow": [
+        "Join us for the kickoff of Cybersecurity Awareness Month!",
+        "Training and resources will be provided to enhance security practices."
+      ],
+      "actionRequired": [
+        "Participate in the kickoff webinar on May 10, 2021.",
+        "Complete the cybersecurity awareness course by May 30, 2021."
+      ],
+      "notes": [
+        "Certificates of completion will be awarded.",
+        "Recordings of sessions will be available online."
+      ],
+      "resources": [
+        {
+          "href": "https://example.com/cybersecurity-month",
+          "title": "Cybersecurity Resources"
+        }
+      ],
+      "whoToContact": [
+        {
+          "href": "https://example.com/it-support",
+          "title": "IT Support"
+        }
+      ],
+      "shareableLink": {
+        "href": "?entry=2021-05-05-unique",
+        "title": "Share this link"
+      }
+    }
+  }
