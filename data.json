@@ -87,6 +87,131 @@
         "title": "Share this link"
       }
     },
+    "2023-09-15-2": {
+      "title": "Launch of New Employee Training Portal 2",
+      "category": "Training",
+      "datePublished": "2023-09-15",
+      "audience": [
+        "All employees",
+        "HR managers"
+      ],
+      "whatYouNeedToKnow": [
+        "A new training portal will be launched to enhance employee learning opportunities.",
+        "It features a wide range of courses and certifications available online."
+      ],
+      "actionRequired": [
+        "Register on the portal by October 1, 2023.",
+        "Complete the mandatory onboarding course by October 15, 2023."
+      ],
+      "notes": [
+        "Access to the portal will be provided via email.",
+        "For any login issues, please contact IT support."
+      ],
+      "resources": [
+        {
+          "href": "https://example.com/training-portal",
+          "title": "Training Portal"
+        }
+      ],
+      "whoToContact": [
+        {
+          "href": "https://example.com/hr-contact",
+          "title": "HR Department"
+        }
+      ],
+      "shareableLink": {
+        "href": "?entry=2023-09-15-unique",
+        "title": "Share this link"
+      }
+    },
+    "2025-12-01-unique": {
+      "title": "helllo",
+      "category": "For information",
+      "datePublished": "2025-12-01",
+      "audience": [
+        "Change agents",
+        "Compensation advisors (CAs)",
+        "Section 33 authorizers",
+        "Section 34 managers"
+      ],
+      "whatYouNeedToKnow": [
+        "Public Services and Procurement Canada (PSPC) would like to inform the community that there will be an extension to the approval of basic pay (or equivalent) and leave without pay (LWOP) transactions in Time and Labour.",
+        "The following changes have been made to the transactions for pay period 2:",
+        "The cut-off for Section 34 managers approval will be 12:00 pm (ET) on Wednesday, January 22, 2025.",
+        "The cut-off for Section 33 authorization will be 4:00 pm (ET) on Wednesday, January 22, 2025."
+      ],
+      "actionRequired": [
+        "Ensure all approvals are completed by the specified deadlines.",
+        "Communicate any issues to the relevant department.",
+        "Verify all entries before submission."
+      ],
+      "notes": [
+        "This extension is a temporary measure.",
+        "Further updates will be provided as necessary.",
+        "Check the internal portal for more information."
+      ],
+      "resources": [
+        {
+          "href": "https://gcintranet.tpsgc-pwgsc.gc.ca/remuneration-compensation/calendrier-schedule/2025-eng.html",
+          "title": "Pay processing schedule – Year 2025"
+        },
+        {
+          "href": "https://example.com/resource2",
+          "title": "Additional Resource 2"
+        }
+      ],
+      "whoToContact": [
+        {
+          "href": "https://gcintranet.tpsgc-pwgsc.gc.ca/remuneration-compensation/soutien-support-eng.html",
+          "title": "Who to contact for pay system support"
+        },
+        {
+          "href": "https://example.com/contact2",
+          "title": "Secondary Contact"
+        }
+      ],
+      "shareableLink": {
+        "href": "?entry=2025-02-01-unique",
+        "title": "Share this link"
+      }
+    },
+    "2024-11-20-2": {
+      "title": "Introduction to New Fiscal Policies",
+      "category": "Finance",
+      "datePublished": "2024-11-20",
+      "audience": [
+        "Finance team",
+        "Executives"
+      ],
+      "whatYouNeedToKnow": [
+        "New fiscal policies will be implemented starting from January 1, 2025.",
+        "These policies aim to streamline budget allocations across departments."
+      ],
+      "actionRequired": [
+        "Attend the policy briefing session by December 10, 2024.",
+        "Review and align departmental budgets accordingly."
+      ],
+      "notes": [
+        "Detailed policy documents will be available on the intranet.",
+        "Feedback can be submitted through the finance portal."
+      ],
+      "resources": [
+        {
+          "href": "https://example.com/new-fiscal-policies",
+          "title": "Fiscal Policy Documents"
+        }
+      ],
+      "whoToContact": [
+        {
+          "href": "https://example.com/finance-contact",
+          "title": "Finance Department"
+        }
+      ],
+      "shareableLink": {
+        "href": "?entry=2024-11-20-unique",
+        "title": "Share this link"
+      }
+    },
     "2023-09-15-unique": {
       "title": "Launch of New Employee Training Portal",
       "category": "Training",

@@ -6,16 +6,18 @@ $(document).ready(function() {
             const years = getUniqueYears(data);
             populateAudienceDropdown(audiences);
             populateYearDropdown(years);
-
+          
             const table = $('#entriesTable').DataTable({
                 data: Object.entries(data).map(([date, entry]) => {
                     return [
                         entry.title,
                         entry.category,
-                        entry.datePublished,
+                        formatDate(entry.datePublished),
                         entry.audience.join(', '),
-                        `<button class="btn btn-warning btn-sm share-btn" data-entry="${date}">Copy Link</button>
-                         <button class="btn btn-primary btn-sm view-btn" data-entry="${date}">View</button>`
+                        `<button class="btn btn-info btn-sm action-btn go-btn" onclick="window.location.href='index.html?entry=${date}';">Go to Entry</button>
+                        <button class="btn btn-warning btn-sm action-btn share-btn" data-entry="${date}">Copy Link</button>
+                         <button class="btn btn-primary btn-sm action-btn view-btn" data-entry="${date}">View</button>
+                        `
                     ];
                 }),
                 columns: [
@@ -127,8 +129,10 @@ $(document).ready(function() {
     }
 
     function formatDate(dateString) {
+        const dateParts = dateString.split('-');
+        const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
+        return date.toLocaleDateString(undefined, options);
     }
 
     function formatChildRow(entry) {
@@ -152,12 +156,12 @@ $(document).ready(function() {
             table.row.add([
                 entry.title,
                 entry.category,
-                entry.datePublished,
+                formatDate(entry.datePublished),
                 entry.audience.join(', '),
                 `<button class="btn btn-warning btn-sm share-btn" data-entry="${entryParam}">Copy Link</button>
                  <button class="btn btn-primary btn-sm view-btn" data-entry="${entryParam}">View</button>`
             ]).draw();
-
+    
             const row = $('#entriesTable').DataTable().rows().nodes().to$().find(`button[data-entry="${entryParam}"]`).closest('tr');
             const tableRow = $('#entriesTable').DataTable().row(row);
             if (!tableRow.child.isShown()) {
@@ -165,6 +169,12 @@ $(document).ready(function() {
                 row.addClass('shown');
                 row.find('button.view-btn').text('Collapse');
             }
+    
+             // Hide the search bar, entry number, audience filter, and year filter
+        $('.dataTables_filter, .dataTables_length, .filters').hide();
+
+             // Show the back button
+             $('#backButton').show();
         }
     }
 });
