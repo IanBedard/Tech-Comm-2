@@ -4,26 +4,26 @@ $(document).ready(function() {
         .then(data => {
             const audiences = getUniqueAudiences(data);
             const years = getUniqueYears(data);
+            
             populateAudienceDropdown(audiences);
             populateYearDropdown(years);
-          
+            populateMonthDropdown();
             const table = $('#entriesTable').DataTable({
                 data: Object.entries(data).map(([date, entry]) => {
                     return [
                         entry.title,
                         entry.category,
-                        formatDate(entry.datePublished),
+                        entry.datePublished, // Use raw date for display and filtering
                         entry.audience.join(', '),
                         `<button class="btn btn-info btn-sm action-btn go-btn" onclick="window.location.href='index.html?entry=${date}';">Go to Entry</button>
-                        <button class="btn btn-warning btn-sm action-btn share-btn" data-entry="${date}">Copy Link</button>
-                         <button class="btn btn-primary btn-sm action-btn view-btn" data-entry="${date}">View</button>
-                        `
+                         <button class="btn btn-warning btn-sm action-btn share-btn" data-entry="${date}">Copy Link</button>
+                         <button class="btn btn-primary btn-sm action-btn view-btn" data-entry="${date}">View</button>`
                     ];
                 }),
                 columns: [
                     { title: "Title" },
                     { title: "Category" },
-                    { title: "Date Published", type: "date" },
+                    { title: "Date Published", type: "date" }, // Use raw date
                     { title: "Audience" },
                     { title: "Actions", orderable: false }
                 ]
@@ -60,8 +60,18 @@ $(document).ready(function() {
             $('#audienceFilter').on('change', function() {
                 filterTable(table);
             });
-
+            
             $('#yearFilter').on('change', function() {
+                const selectedYear = $(this).val();
+                if (selectedYear) {
+                    $('#monthFilter').show();
+                } else {
+                    $('#monthFilter').hide();
+                }
+                filterTable(table);
+            });
+            
+            $('#monthFilter').on('change', function() {
                 filterTable(table);
             });
 
@@ -85,7 +95,14 @@ $(document).ready(function() {
         });
         return Array.from(yearSet).sort();
     }
-
+    function getUniqueMonths(data) {
+        const monthSet = new Set();
+        Object.values(data).forEach(entry => {
+            const month = new Date(entry.datePublished).toLocaleString('default', { month: 'long' });
+            monthSet.add(month);
+        });
+        return Array.from(monthSet).sort((a, b) => new Date(Date.parse(a + " 1, 2021")) - new Date(Date.parse(b + " 1, 2021")));
+    }
     function populateAudienceDropdown(audiences) {
         const audienceFilter = $('#audienceFilter');
         audiences.forEach(audience => {
@@ -105,7 +122,17 @@ $(document).ready(function() {
             yearFilter.append(option);
         });
     }
-
+    function populateMonthDropdown() {
+        const monthFilter = $('#monthFilter');
+        const months = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        months.forEach(month => {
+            const option = $('<option>').val(month).text(month);
+            monthFilter.append(option);
+        });
+    }
     function escapeRegex(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
@@ -113,28 +140,44 @@ $(document).ready(function() {
     function filterTable(table) {
         const selectedAudiences = $('#audienceFilter').val();
         const selectedYear = $('#yearFilter').val();
+        const selectedMonth = $('#monthFilter').val();
         let audienceRegex = '';
-        let yearRegex = '';
-
+        let dateRegex = '';
+    
         if (selectedAudiences && selectedAudiences.length > 0) {
             audienceRegex = selectedAudiences.map(audience => `(?=.*${escapeRegex(audience)})`).join('');
         }
-
-        if (selectedYear) {
-            yearRegex = `^${selectedYear}`;
+    
+        if (selectedYear || selectedMonth) {
+            dateRegex = '^';
+            if (selectedYear) {
+                dateRegex += selectedYear;
+            }
+            if (selectedMonth) {
+                const monthIndex = new Date(Date.parse(selectedMonth + " 1, 2021")).getMonth() + 1;
+                dateRegex += `-${monthIndex.toString().padStart(2, '0')}`;
+            }
         }
-
+    
+        console.log("Selected Audiences:", selectedAudiences);
+        console.log("Selected Year:", selectedYear);
+        console.log("Selected Month:", selectedMonth);
+        console.log("Audience Regex:", audienceRegex);
+        console.log("Date Regex:", dateRegex);
+    
+        table.column(2).search(dateRegex, true, false).draw(); // Use raw date column for filtering
         table.column(3).search(audienceRegex, true, false).draw();
-        table.column(2).search(yearRegex, true, false).draw();
     }
+    
 
-    function formatDate(dateString) {
-        const dateParts = dateString.split('-');
-        const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return date.toLocaleDateString(undefined, options);
-    }
-
+ function formatDate(dateString) {
+    if (!dateString) return ''; // Handle empty or undefined dates
+    const dateParts = dateString.split('-');
+    if (dateParts.length !== 3) return dateString; // Return original if format is unexpected
+    const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+}
     function formatChildRow(entry) {
         return `
             <div class="card card-body">
