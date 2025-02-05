@@ -204,17 +204,30 @@ function formatContent(content) {
     // Check if it's a string
     if (typeof content === "string") {
         return `<p>${content}</p>`; // Return a paragraph if it's just a string
-    } 
+    }
 
     // Check if it's an array
     else if (Array.isArray(content)) {
         return `<ul>${content.map(item => `<li>${item}</li>`).join('')}</ul>`; // Return a list if it's an array
     }
 
-    // Check if it's an object with both 'text' and 'links' (for resources format)
-    else if (typeof content === "object" && content.text && Array.isArray(content.links)) {
-        const links = content.links.map(link => `<li><a href="${link.href}">${link.title}</a></li>`).join('');
-        return `<p>${content.text}</p><ul>${links}</ul>`; // Return the text and a list of links
+    // Check if it's an object with 'text' and 'links' (for resources format)
+    else if (typeof content === "object" && content.links) {
+        // Dynamically loop through text fields (text, text2, text3, etc.)
+        let textContent = '';
+        for (let key in content) {
+            if (key.startsWith('text') && typeof content[key] === 'string') {
+                textContent += `<p>${content[key]}</p>`;
+            }
+        }
+
+        // Process links (title, href, and description)
+        const links = content.links.map(link => {
+            const linkText = link.description ? `<p>${link.description}</p>` : ''; // Check for description
+            return `<li><a href="${link.href}">${link.title}</a>${linkText}</li>`;
+        }).join('');
+
+        return `${textContent}<ul>${links}</ul>`;
     }
 
     // Fallback
