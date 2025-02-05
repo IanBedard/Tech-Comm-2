@@ -10,12 +10,14 @@
       "Step 2: Wait for approval."
     ],
     "notes": "This is a general note.",
-  "resources": {
-  "text": "dffddf",
+"resources": {
+  "text": "Here are some helpful links:",
+  "text2": "This is some additional text under the links.",
   "links": [
-    {"title": "admin", "href": "fsdfs"},
-    {"title": "admin", "href": "fsdfs"}
-  ]
+    {"title": "admin", "href": "fsdfs", "description": "This is the admin link."},
+    {"title": "help", "href": "fsdfsd", "description": "This is the help link."}
+  ],
+  "text3": "Some more helpful details:"
 },
     "whoToContact": [
       { "title": "Admin", "href": "mailto:admin@example.com" }

@@ -201,47 +201,44 @@ $(document).ready(function() {
 function formatContent(content) {
     if (!content) return ''; // Handle empty fields
 
-    // Check if it's a string
     if (typeof content === "string") {
         return `<p>${content}</p>`; // Return a paragraph if it's just a string
-    }
-
-    // Check if it's an array
-    else if (Array.isArray(content)) {
+    } else if (Array.isArray(content)) {
         return `<ul>${content.map(item => `<li>${item}</li>`).join('')}</ul>`; // Return a list if it's an array
+    } else if (typeof content === "object" && content.text && Array.isArray(content.list)) {
+        // If it contains both a string and an array
+        return `<p>${content.text}</p><ul>${content.list.map(item => `<li>${item}</li>`).join('')}</ul>`;
     }
-
-    // Check if it's an object with 'text' and 'links' (for resources format)
-    else if (typeof content === "object" && content.links) {
-        // Dynamically loop through text fields (text, text2, text3, etc.)
-        let textContent = '';
-        for (let key in content) {
-            if (key.startsWith('text') && typeof content[key] === 'string') {
-                textContent += `<p>${content[key]}</p>`;
-            }
-        }
-
-        // Process links (title, href, and description)
-        const links = content.links.map(link => {
-            const linkText = link.description ? `<p>${link.description}</p>` : ''; // Check for description
-            return `<li><a href="${link.href}">${link.title}</a>${linkText}</li>`;
-        }).join('');
-
-        return `${textContent}<ul>${links}</ul>`;
-    }
-
-    // Fallback
     return '';
 }
 
+
 function formatChildRow(entry) {
+    let resourcesContent = '';
+
+    // Loop through each text field (text, text2, text3, etc.) in resources
+    Object.keys(entry.resources).forEach((key) => {
+        if (key.startsWith('text') && entry.resources[key]) {
+            resourcesContent += formatContent(entry.resources[key]);
+        }
+    });
+
+    // Format the links as a list (this will always come after the text content)
+    if (entry.resources.links && Array.isArray(entry.resources.links) && entry.resources.links.length > 0) {
+        resourcesContent += `<ul>`;
+        entry.resources.links.forEach(link => {
+            resourcesContent += `<li><a href="${link.href}" title="${link.description}">${link.title}</a></li>`;
+        });
+        resourcesContent += `</ul>`;
+    }
+
     return `
         <div class="card card-body">
             <p><strong>What You Need to Know:</strong></p> ${formatContent(entry.whatYouNeedToKnow)}
             <p><strong>Action Required:</strong></p> ${formatContent(entry.actionRequired)}
             <p><strong>Notes:</strong></p> ${formatContent(entry.notes)}
             <p><strong>Resources:</strong> 
-                ${formatContent(entry.resources)}
+                ${resourcesContent || "None"}
             </p>
             <p><strong>Who to Contact:</strong> 
                 ${entry.whoToContact.length > 0 ? entry.whoToContact.map(contact => `<a href="${contact.href}">${contact.title}</a>`).join(', ') : "None"}
@@ -249,6 +246,8 @@ function formatChildRow(entry) {
         </div>
     `;
 }
+
+
 
 
     function handleQueryParameter(data, table) {
