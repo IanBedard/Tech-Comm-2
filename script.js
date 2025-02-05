@@ -23,10 +23,14 @@ $(document).ready(function() {
                 columns: [
                     { title: "Title" },
                     { title: "Category" },
-                    { title: "Date Published", type: "date" }, // Use raw date
+                    { title: "Date Published", type: "date",  render: function(data, type, row) {
+                        return type === 'display' ? formatDate(data) : data; // Format for display, keep raw for sorting
+                    } }, // Use raw date
                     { title: "Audience" },
                     { title: "Actions", orderable: false }
-                ]
+                ],
+                pageLength: 5, // Set default page length to 5
+                lengthMenu: [5, 10] // Allow selection of 5 or 10 entries per page
             });
 
             $('#entriesTable tbody').on('click', 'button.view-btn', function() {
