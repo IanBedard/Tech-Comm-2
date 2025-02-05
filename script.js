@@ -31,12 +31,12 @@ $(document).ready(function() {
                         render: function(data, type, row) {
                             if (type === 'display') {
                                 return data.split(', ').map(audience => {
-                                    let badgeClass = "badge-primary"; // Default
-                                    if (audience.includes("CA")) badgeClass = "badge-success";
-                                    if (audience.includes("HR")) badgeClass = "badge-warning";
-                                    if (audience.includes("Change agents")) badgeClass = "badge-info";
+                                    let labelClass = "label-primary"; // Default
+                                    if (audience.includes("CA")) labelClass = "label-success";
+                                    if (audience.includes("HR")) labelClass = "label-warning";
+                                    if (audience.includes("Change agents")) labelClass = "label-info";
                                     
-                                    return `<span class="badge ${badgeClass}">${audience}</span>`;
+                                    return `<span class="label ${labelClass}">${audience}</span>`;
                                 }).join(' ');
                             }
                             return data;
@@ -234,7 +234,7 @@ $(document).ready(function() {
             }
     
              // Hide the search bar, entry number, audience filter, and year filter
-        $('.dataTables_filter, .dataTables_length, .filters').hide();
+        $('.dataTables_filter, .dataTables_length, .filters, .pagination').hide();
 
              // Show the back button
              $('#backButton').show();
