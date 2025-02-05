@@ -198,17 +198,36 @@ $(document).ready(function() {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return date.toLocaleDateString(undefined, options);
 }
-    function formatChildRow(entry) {
-        return `
-            <div class="card card-body">
-                <p><strong>What You Need to Know:</strong> ${entry.whatYouNeedToKnow.join(' ')}</p>
-                <p><strong>Action Required:</strong> ${entry.actionRequired.join(' ')}</p>
-                <p><strong>Notes:</strong> ${entry.notes.join(' ')}</p>
-                <p><strong>Resources:</strong> ${entry.resources.map(resource => `<a href="${resource.href}">${resource.title}</a>`).join(', ')}</p>
-                <p><strong>Who to Contact:</strong> ${entry.whoToContact.map(contact => `<a href="${contact.href}">${contact.title}</a>`).join(', ')}</p>
-            </div>
-        `;
+function formatContent(content) {
+    if (!content) return ''; // Handle empty fields
+
+    if (typeof content === "string") {
+        return `<p>${content}</p>`; // Return a paragraph if it's just a string
+    } else if (Array.isArray(content)) {
+        return `<ul>${content.map(item => `<li>${item}</li>`).join('')}</ul>`; // Return a list if it's an array
+    } else if (typeof content === "object" && content.text && Array.isArray(content.list)) {
+        // If it contains both a string and an array
+        return `<p>${content.text}</p><ul>${content.list.map(item => `<li>${item}</li>`).join('')}</ul>`;
     }
+    return '';
+}
+
+function formatChildRow(entry) {
+    return `
+        <div class="card card-body">
+            <p><strong>What You Need to Know:</strong></p> ${formatContent(entry.whatYouNeedToKnow)}
+            <p><strong>Action Required:</strong></p> ${formatContent(entry.actionRequired)}
+            <p><strong>Notes:</strong></p> ${formatContent(entry.notes)}
+            <p><strong>Resources:</strong> 
+                ${entry.resources.length > 0 ? entry.resources.map(resource => `<a href="${resource.href}">${resource.title}</a>`).join(', ') : "None"}
+            </p>
+            <p><strong>Who to Contact:</strong> 
+                ${entry.whoToContact.length > 0 ? entry.whoToContact.map(contact => `<a href="${contact.href}">${contact.title}</a>`).join(', ') : "None"}
+            </p>
+        </div>
+    `;
+}
+
 
     function handleQueryParameter(data, table) {
         const params = new URLSearchParams(window.location.search);
