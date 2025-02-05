@@ -26,7 +26,23 @@ $(document).ready(function() {
                     { title: "Date Published", type: "date",  render: function(data, type, row) {
                         return type === 'display' ? formatDate(data) : data; // Format for display, keep raw for sorting
                     } }, // Use raw date
-                    { title: "Audience" },
+                    { 
+                        title: "Audience", 
+                        render: function(data, type, row) {
+                            if (type === 'display') {
+                                return data.split(', ').map(audience => {
+                                    let badgeClass = "badge-primary"; // Default
+                                    if (audience.includes("CA")) badgeClass = "badge-success";
+                                    if (audience.includes("HR")) badgeClass = "badge-warning";
+                                    if (audience.includes("Change agents")) badgeClass = "badge-info";
+                                    
+                                    return `<span class="badge ${badgeClass}">${audience}</span>`;
+                                }).join(' ');
+                            }
+                            return data;
+                        } 
+                    },
+                    
                     { title: "Actions", orderable: false }
                 ],
                 pageLength: 5, // Set default page length to 5
