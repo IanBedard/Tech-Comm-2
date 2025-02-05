@@ -10,9 +10,13 @@
       "Step 2: Wait for approval."
     ],
     "notes": "This is a general note.",
-    "resources": [
-      { "title": "Submission Form", "href": "https://example.com/form" }
-    ],
+  "resources": {
+  "text": "dffddf",
+  "links": [
+    {"title": "admin", "href": "fsdfs"},
+    {"title": "admin", "href": "fsdfs"}
+  ]
+},
     "whoToContact": [
       { "title": "Admin", "href": "mailto:admin@example.com" }
     ]

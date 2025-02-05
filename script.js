@@ -201,14 +201,23 @@ $(document).ready(function() {
 function formatContent(content) {
     if (!content) return ''; // Handle empty fields
 
+    // Check if it's a string
     if (typeof content === "string") {
         return `<p>${content}</p>`; // Return a paragraph if it's just a string
-    } else if (Array.isArray(content)) {
+    } 
+
+    // Check if it's an array
+    else if (Array.isArray(content)) {
         return `<ul>${content.map(item => `<li>${item}</li>`).join('')}</ul>`; // Return a list if it's an array
-    } else if (typeof content === "object" && content.text && Array.isArray(content.list)) {
-        // If it contains both a string and an array
-        return `<p>${content.text}</p><ul>${content.list.map(item => `<li>${item}</li>`).join('')}</ul>`;
     }
+
+    // Check if it's an object with both 'text' and 'links' (for resources format)
+    else if (typeof content === "object" && content.text && Array.isArray(content.links)) {
+        const links = content.links.map(link => `<li><a href="${link.href}">${link.title}</a></li>`).join('');
+        return `<p>${content.text}</p><ul>${links}</ul>`; // Return the text and a list of links
+    }
+
+    // Fallback
     return '';
 }
 
@@ -219,7 +228,7 @@ function formatChildRow(entry) {
             <p><strong>Action Required:</strong></p> ${formatContent(entry.actionRequired)}
             <p><strong>Notes:</strong></p> ${formatContent(entry.notes)}
             <p><strong>Resources:</strong> 
-                ${entry.resources.length > 0 ? entry.resources.map(resource => `<a href="${resource.href}">${resource.title}</a>`).join(', ') : "None"}
+                ${formatContent(entry.resources)}
             </p>
             <p><strong>Who to Contact:</strong> 
                 ${entry.whoToContact.length > 0 ? entry.whoToContact.map(contact => `<a href="${contact.href}">${contact.title}</a>`).join(', ') : "None"}
