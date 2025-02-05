@@ -211,25 +211,26 @@ function formatContent(content) {
     }
     return '';
 }
-
-
 function formatChildRow(entry) {
     let resourcesContent = '';
 
-    // Loop through each text field (text, text2, text3, etc.) in resources
-    Object.keys(entry.resources).forEach((key) => {
-        if (key.startsWith('text') && entry.resources[key]) {
-            resourcesContent += formatContent(entry.resources[key]);
-        }
-    });
+    // Loop through each section in resources (e.g., text + links)
+    if (entry.resources && Array.isArray(entry.resources)) {
+        entry.resources.forEach(resource => {
+            // Add the text for the current resource section
+            if (resource.text) {
+                resourcesContent += `<p>${resource.text}</p>`;
+            }
 
-    // Format the links as a list (this will always come after the text content)
-    if (entry.resources.links && Array.isArray(entry.resources.links) && entry.resources.links.length > 0) {
-        resourcesContent += `<ul>`;
-        entry.resources.links.forEach(link => {
-            resourcesContent += `<li><a href="${link.href}" title="${link.description}">${link.title}</a></li>`;
+            // Add the links for the current resource section
+            if (Array.isArray(resource.links) && resource.links.length > 0) {
+                resourcesContent += `<ul>`;
+                resource.links.forEach(link => {
+                    resourcesContent += `<li><a href="${link.href}" title="${link.description}">${link.title}</a></li>`;
+                });
+                resourcesContent += `</ul>`;
+            }
         });
-        resourcesContent += `</ul>`;
     }
 
     return `
@@ -246,6 +247,8 @@ function formatChildRow(entry) {
         </div>
     `;
 }
+
+
 
 
 
