@@ -1,55 +1,42 @@
-$(document).ready(function() {
+$(document).ready(function () {
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
             const audiences = getUniqueAudiences(data);
             const years = getUniqueYears(data);
-            
+            const months = getUniqueMonths(data);
+        
             populateAudienceDropdown(audiences);
             populateYearDropdown(years);
-            populateMonthDropdown();
+            populateMonthDropdown(data);
+
             const table = $('#entriesTable').DataTable({
-                data: Object.entries(data).map(([date, entry]) => {
-                    return [
-                        entry.title,
-                        entry.category,
-                        entry.datePublished, // Use raw date for display and filtering
-                        entry.audience.join(', '),
-                        `<button class="btn btn-info btn-sm action-btn go-btn" onclick="window.location.href='index.html?entry=${date}';">Go to Entry</button>
-                         <button class="btn btn-warning btn-sm action-btn share-btn" data-entry="${date}">Copy Link</button>
-                         <button class="btn btn-primary btn-sm action-btn view-btn" data-entry="${date}">View</button>`
-                    ];
-                }),
+                data: Object.entries(data).map(([id, entry]) => [
+                    entry.title,
+                    entry.category,
+                    entry.datePublished,
+                    entry.audience.join(', '), // Keep raw for filtering
+                    `<button class="btn btn-info btn-sm go-btn" onclick="window.location.href='index.html?entry=${id}';">Go</button>
+                     <button class="btn btn-warning btn-sm share-btn" data-entry="${id}">Copy Link</button>
+                     <button class="btn btn-primary btn-sm view-btn" data-entry="${id}">View</button>`
+                ]),
                 columns: [
                     { title: "Title" },
                     { title: "Category" },
-                    { title: "Date Published", type: "date",  render: function(data, type, row) {
-                        return type === 'display' ? formatDate(data) : data; // Format for display, keep raw for sorting
-                    } }, // Use raw date
-                    { 
-                        title: "Audience", 
-                        render: function(data, type, row) {
-                            if (type === 'display') {
-                                return data.split(', ').map(audience => {
-                                    let labelClass = "label-primary"; // Default
-                                    if (audience.includes("CA")) labelClass = "label-success";
-                                    if (audience.includes("HR")) labelClass = "label-warning";
-                                    if (audience.includes("Change agents")) labelClass = "label-info";
-                                    
-                                    return `<span class="label ${labelClass}">${audience}</span>`;
-                                }).join(' ');
-                            }
-                            return data;
-                        } 
-                    },
-                    
+                    { title: "Date Published", type: "date", render: (data, type) => type === 'display' ? formatDate(data) : data },
+                    { title: "Audience" }, // Raw for filtering
                     { title: "Actions", orderable: false }
                 ],
-                pageLength: 5, // Set default page length to 5
-                lengthMenu: [5, 10] // Allow selection of 5 or 10 entries per page
+                pageLength: 5,
+                lengthMenu: [5, 10],
+                createdRow: function (row, data) {
+                    const $audienceCell = $('td', row).eq(3);
+                    const audiences = $audienceCell.text().split(', ').map(a => a.trim());
+                    $audienceCell.html(audiences.map(a => formatAudienceLabel(a)).join(' '));
+                }
             });
 
-            $('#entriesTable tbody').on('click', 'button.view-btn', function() {
+            $('#entriesTable tbody').on('click', 'button.view-btn', function () {
                 const tr = $(this).closest('tr');
                 const row = table.row(tr);
                 const entryId = $(this).data('entry');
@@ -60,38 +47,19 @@ $(document).ready(function() {
                     tr.removeClass('shown');
                     button.text('View');
                 } else {
-                    const entry = data[entryId];
-                    row.child(formatChildRow(entry)).show();
+                    row.child(formatChildRow(data[entryId])).show();
                     tr.addClass('shown');
                     button.text('Collapse');
                 }
             });
 
-            $('#entriesTable tbody').on('click', 'button.share-btn', function() {
+            $('#entriesTable tbody').on('click', 'button.share-btn', function () {
                 const entryId = $(this).data('entry');
                 const shareableLink = `${window.location.origin}${window.location.pathname}?entry=${entryId}`;
-                navigator.clipboard.writeText(shareableLink).then(() => {
-                    alert('Link copied to clipboard!');
-                }, (err) => {
-                    console.error('Could not copy text: ', err);
-                });
+                navigator.clipboard.writeText(shareableLink).then(() => alert('Link copied to clipboard!'));
             });
 
-            $('#audienceFilter').on('change', function() {
-                filterTable(table);
-            });
-            
-            $('#yearFilter').on('change', function() {
-                const selectedYear = $(this).val();
-                if (selectedYear) {
-                    $('#monthFilter').show();
-                } else {
-                    $('#monthFilter').hide();
-                }
-                filterTable(table);
-            });
-            
-            $('#monthFilter').on('change', function() {
+            $('#audienceFilter, #yearFilter, #monthFilter').on('change', function () {
                 filterTable(table);
             });
 
@@ -99,160 +67,64 @@ $(document).ready(function() {
         })
         .catch(error => console.error('Error loading JSON data:', error));
 
-    function getUniqueAudiences(data) {
-        const audienceSet = new Set();
-        Object.values(data).forEach(entry => {
-            entry.audience.forEach(audience => audienceSet.add(audience));
-        });
-        return Array.from(audienceSet).sort();
+    function formatAudienceLabel(audience) {
+        const audienceColors = {
+            "Compensation advisors (CAs)": "label-success",  // Green
+            "US": "label-primary",  // Blue
+            "UK": "label-warning",  // Yellow
+            "EU": "label-info",     // Light Blue
+            "Global": "label-danger" // Red
+        };
+        const labelClass = audienceColors[audience] || "label-secondary"; // Default gray
+        return `<span class="label ${labelClass}">${audience}</span>`;
     }
 
-    function getUniqueYears(data) {
-        const yearSet = new Set();
-        Object.values(data).forEach(entry => {
-            const year = new Date(entry.datePublished).getFullYear();
-            yearSet.add(year);
-        });
-        return Array.from(yearSet).sort();
-    }
-    function getUniqueMonths(data) {
-        const monthSet = new Set();
-        Object.values(data).forEach(entry => {
-            const month = new Date(entry.datePublished).toLocaleString('default', { month: 'long' });
-            monthSet.add(month);
-        });
-        return Array.from(monthSet).sort((a, b) => new Date(Date.parse(a + " 1, 2021")) - new Date(Date.parse(b + " 1, 2021")));
-    }
-    function populateAudienceDropdown(audiences) {
-        const audienceFilter = $('#audienceFilter');
-        audiences.forEach(audience => {
-            const option = $('<option>').val(audience).text(audience);
-            audienceFilter.append(option);
-        });
-        audienceFilter.select2({
-            placeholder: "Select audiences",
-            allowClear: true
-        });
+    function formatChildRow(entry) {
+        return `
+            <div class="card card-body">
+                <p><strong>What You Need to Know:</strong></p> ${entry.whatYouNeedToKnow}
+                <p><strong>Action Required:</strong></p> ${entry.actionRequired}
+                <p><strong>Notes:</strong></p> ${entry.notes}
+                <p><strong>Resources:</strong></p> ${entry.resources || "None"}
+                <p><strong>Who to Contact:</strong></p> ${entry.whoToContact || "None"}
+            </div>
+        `;
     }
 
-    function populateYearDropdown(years) {
-        const yearFilter = $('#yearFilter');
-        years.forEach(year => {
-            const option = $('<option>').val(year).text(year);
-            yearFilter.append(option);
-        });
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
     }
-    function populateMonthDropdown() {
-        const monthFilter = $('#monthFilter');
-        const months = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-        months.forEach(month => {
-            const option = $('<option>').val(month).text(month);
-            monthFilter.append(option);
-        });
-    }
-    function escapeRegex(string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-
     function filterTable(table) {
         const selectedAudiences = $('#audienceFilter').val();
         const selectedYear = $('#yearFilter').val();
         const selectedMonth = $('#monthFilter').val();
+    
         let audienceRegex = '';
-        let dateRegex = '';
-    
         if (selectedAudiences && selectedAudiences.length > 0) {
-            audienceRegex = selectedAudiences.map(audience => `(?=.*${escapeRegex(audience)})`).join('');
+            // Escape special regex characters and join audiences with a regex OR (|)
+            audienceRegex = selectedAudiences
+                .map(a => a.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')) // Escape special characters
+                .join('|'); // Join with OR operator for multi-word audiences
         }
     
-        if (selectedYear || selectedMonth) {
-            dateRegex = '^';
-            if (selectedYear) {
-                dateRegex += selectedYear;
-            }
-            if (selectedMonth) {
-                const monthIndex = new Date(Date.parse(selectedMonth + " 1, 2021")).getMonth() + 1;
-                dateRegex += `-${monthIndex.toString().padStart(2, '0')}`;
-            }
+        let dateRegex = '';
+        if (selectedMonth) {
+            const monthNum = (new Date(`${selectedMonth} 1, 2000`)).getMonth() + 1;
+            dateRegex = `-${monthNum.toString().padStart(2, '0')}-`; // Matches "-02-" for February
         }
     
-        console.log("Selected Audiences:", selectedAudiences);
-        console.log("Selected Year:", selectedYear);
-        console.log("Selected Month:", selectedMonth);
-        console.log("Audience Regex:", audienceRegex);
-        console.log("Date Regex:", dateRegex);
+        if (selectedYear) {
+            dateRegex = `^${selectedYear}${dateRegex}`; // Matches "2024-02-"
+        }
     
-        table.column(2).search(dateRegex, true, false).draw(); // Use raw date column for filtering
+        // Apply regex filtering
+        table.column(2).search(dateRegex, true, false).draw();
         table.column(3).search(audienceRegex, true, false).draw();
     }
     
-
- function formatDate(dateString) {
-    if (!dateString) return ''; // Handle empty or undefined dates
-    const dateParts = dateString.split('-');
-    if (dateParts.length !== 3) return dateString; // Return original if format is unexpected
-    const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString(undefined, options);
-}
-function formatContent(content) {
-    if (!content) return ''; // Handle empty fields
-
-    if (typeof content === "string") {
-        return `<p>${content}</p>`; // Return a paragraph if it's just a string
-    } else if (Array.isArray(content)) {
-        return `<ul>${content.map(item => `<li>${item}</li>`).join('')}</ul>`; // Return a list if it's an array
-    } else if (typeof content === "object" && content.text && Array.isArray(content.list)) {
-        // If it contains both a string and an array
-        return `<p>${content.text}</p><ul>${content.list.map(item => `<li>${item}</li>`).join('')}</ul>`;
-    }
-    return '';
-}
-function formatChildRow(entry) {
-    let resourcesContent = '';
-
-    // Loop through each section in resources (e.g., text + links)
-    if (entry.resources && Array.isArray(entry.resources)) {
-        entry.resources.forEach(resource => {
-            // Add the text for the current resource section
-            if (resource.text) {
-                resourcesContent += `<p>${resource.text}</p>`;
-            }
-
-            // Add the links for the current resource section
-            if (Array.isArray(resource.links) && resource.links.length > 0) {
-                resourcesContent += `<ul>`;
-                resource.links.forEach(link => {
-                    resourcesContent += `<li><a href="${link.href}" title="${link.description}">${link.title}</a></li>`;
-                });
-                resourcesContent += `</ul>`;
-            }
-        });
-    }
-
-    return `
-        <div class="card card-body">
-            <p><strong>What You Need to Know:</strong></p> ${formatContent(entry.whatYouNeedToKnow)}
-            <p><strong>Action Required:</strong></p> ${formatContent(entry.actionRequired)}
-            <p><strong>Notes:</strong></p> ${formatContent(entry.notes)}
-            <p><strong>Resources:</strong> 
-                ${resourcesContent || "None"}
-            </p>
-            <p><strong>Who to Contact:</strong> 
-                ${entry.whoToContact.length > 0 ? entry.whoToContact.map(contact => `<a href="${contact.href}">${contact.title}</a>`).join(', ') : "None"}
-            </p>
-        </div>
-    `;
-}
-
-
-
-
-
-
+    
     function handleQueryParameter(data, table) {
         const params = new URLSearchParams(window.location.search);
         const entryParam = params.get('entry');
@@ -267,20 +139,69 @@ function formatChildRow(entry) {
                 `<button class="btn btn-warning btn-sm share-btn" data-entry="${entryParam}">Copy Link</button>
                  <button class="btn btn-primary btn-sm view-btn" data-entry="${entryParam}">View</button>`
             ]).draw();
-    
-            const row = $('#entriesTable').DataTable().rows().nodes().to$().find(`button[data-entry="${entryParam}"]`).closest('tr');
-            const tableRow = $('#entriesTable').DataTable().row(row);
-            if (!tableRow.child.isShown()) {
-                tableRow.child(formatChildRow(entry)).show();
-                row.addClass('shown');
-                row.find('button.view-btn').text('Collapse');
-            }
-    
-             // Hide the search bar, entry number, audience filter, and year filter
-        $('.dataTables_filter, .dataTables_length, .filters, .pagination').hide();
 
-             // Show the back button
-             $('#backButton').show();
+            const row = $('#entriesTable tbody').find(`button[data-entry="${entryParam}"]`).closest('tr');
+            const tableRow = table.row(row);
+            tableRow.child(formatChildRow(entry)).show();
+            row.addClass('shown');
+            row.find('button.view-btn').text('Collapse');
+
+            $('.dataTables_filter, .dataTables_length, .filters, .pagination').hide();
+            $('#backButton').show();
         }
+    }
+
+    function getUniqueAudiences(data) {
+        return [...new Set(Object.values(data).flatMap(entry => entry.audience))].sort();
+    }
+
+    function getUniqueYears(data) {
+        return [...new Set(Object.values(data).map(entry => new Date(entry.datePublished).getFullYear()))].sort();
+    }
+
+    function populateAudienceDropdown(audiences) {
+        const audienceFilter = $('#audienceFilter');
+        audiences.forEach(audience => audienceFilter.append($('<option>').val(audience).text(audience)));
+        audienceFilter.select2({ placeholder: "Select audiences", allowClear: true });
+    }
+
+    function populateYearDropdown(years) {
+        const yearFilter = $('#yearFilter');
+        years.forEach(year => yearFilter.append($('<option>').val(year).text(year)));
+    }
+    
+    function getUniqueMonths(data) {
+        const monthsSet = new Set();
+        Object.values(data).forEach(entry => {
+            const date = new Date(entry.datePublished);
+            const month = date.toLocaleString('default', { month: 'long' });
+            monthsSet.add(month);
+        });
+        return Array.from(monthsSet).sort((a, b) => 
+            new Date(`${a} 1, 2000`) - new Date(`${b} 1, 2000`)
+        );
+    }
+
+    function populateMonthDropdown(data, selectedYear) {
+        const monthFilter = $('#monthFilter');
+        monthFilter.empty().append($('<option>').val('').text('All Months'));
+
+        const monthsSet = new Set();
+
+        Object.values(data).forEach(entry => {
+            const date = new Date(entry.datePublished);
+            const entryYear = date.getFullYear().toString();
+            const monthName = date.toLocaleString('default', { month: 'long' });
+
+            if (!selectedYear || entryYear === selectedYear) {
+                monthsSet.add(monthName);
+            }
+        });
+
+        Array.from(monthsSet).sort((a, b) =>
+            new Date(`${a} 1, 2000`) - new Date(`${b} 1, 2000`)
+        ).forEach(month => monthFilter.append($('<option>').val(month).text(month)));
+
+        monthFilter.toggle(monthsSet.size > 0);
     }
 });
