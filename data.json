@@ -1,124 +1,32 @@
 {
   "entry1": {
-    "title": "Department access schedule for 2024 tax slips",
-    "category": "For action",
+    "title": "Automated data clean-up in the Time and Labour module",
+    "category": "For information",
     "datePublished": "2025-02-04",
-    "audience": ["Change agents", "Compensation advisors (CAs)", "Human Resources (HR) professionals", "Employees"],
-    "whatYouNeedToKnow": [
-      "Public Services and Procurement Canada (PSPC) will begin issuing the 2024 tax slips to employees on February 21, 2025.",
-      "2024 tax slips in Phoenix Self Service, MyGCPay and MyGCPay external will be available to employees according to the department access schedule (refer to the Resources section below).",
-      "Employees using online access to retrieve their 2024 tax slips should only do so as of the date scheduled for their department or agency. The staggered approach by department ensures an efficient roll-out of tax slips and reduces the potential congestion on the systems due to the high volume of users.",
-      "Employees registered with Canada Revenue Agency’s or Revenu Québec’s online services will be able to access their 2024 tax information through “MyAccount” by March 3, 2025."
+    "audience": [
+      "Change agents",
+      "Compensation advisors (CAs)",
+      "Human Resources (HR)"
     ],
-    "actionRequired": "Departments and agencies are encouraged to review the department access schedule for 2024 tax slips and communicate the access date to their employees.",
-    "notes": "Former employees or employees without access to the Government of Canada network can access their 2024 tax slips on MyGCPay external. Employees that have not registered for an account will have their tax slips mailed by February 28, 2025.",
-   "resources": [
-  {
-    "text": "For information on how and when to access 2024 tax slips, visit:",
-    "links": [
-      {"title": "Accessing and managing your tax slips", "href": "https://www.tpsgc-pwgsc.gc.ca/remuneration-compensation/services-paye-pay-services/systeme-paye-employes-pay-system-employees/feuillet-impot-tax-slip-eng.html"},
-      {"title": "Department access schedule for 2024 tax slips", "href": "https://www.canada.ca/en/public-services-procurement/services/pay-pension/pay-administration/tax-season-information/departmental-access-schedule-tax-slips.html"}
-    ]
-  },
-  {
-    "text": "For additional resources to help navigate tax season, refer to the <a href='https://gcintranet.tpsgc-pwgsc.gc.ca/remuneration-compensation/outils-periode-declaration-tax-season-tools-eng.html'>Tax season toolbox</a>."
-  },
-  {
-    "text": "Refer to the <a href='https://www.tpsgc-pwgsc.gc.ca/remuneration-compensation/services-paye-pay-services/paye-information-pay/paye-talon-stub-pay-eng.html'>How public service pay works</a> page for general information about pay and tax slips and to learn more about <a href='https://www.tpsgc-pwgsc.gc.ca/remuneration-compensation/services-paye-pay-services/paye-information-pay/lire-paye-talon-read-pay-stub-eng.html#YTD'>how to compare year-to-date amounts on a pay stub with tax slips</a>."
- 
-  }
-],
-    "whoToContact": [
-      { 
-      "links": [{ "title": "Who to contact for pay system support", "href": "https://gcintranet.tpsgc-pwgsc.gc.ca/remuneration-compensation/soutien-support-eng.html" }]
-    }
-    ]
+    "whatYouNeedToKnow": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>",
+    "actionRequired": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>",
+    "notes": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>",
+    "resources": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>",
+    "whoToContact": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>"
   },
   "entry2": {
-    "title": "Reminder",
-    "category": "Alert",
-    "datePublished": "2025-02-06",
-    "audience": ["Employees"],
-    "whatYouNeedToKnow": [
-      "Meeting on Monday.",
-      "Prepare your reports."
+    "title": "Automated data clean-up in the Time and Labour module",
+    "category": "For information",
+    "datePublished": "2024-06-02",
+    "audience": [
+      "Very cool",
+      "Interesting",
+      "Type2"
     ],
-    "actionRequired": "Acknowledge receipt of this message.",
-    "notes": [
-      "Bring necessary documents.",
-      "Be on time."
-    ],
-    "resources": [],
-    "whoToContact": []
-  },
-  "entry3": {
-    "title": "Mixed Example",
-    "category": "Guidelines",
-    "datePublished": "2025-02-07",
-    "audience": ["Managers"],
-    "whatYouNeedToKnow": "Read carefully before proceeding.",
-    "actionRequired": [
-      "Review the new policy.",
-      "Provide feedback."
-    ],
-    "notes": "Policy updates will be enforced next month.",
-    "resources": [],
-    "whoToContact": []
-  },
-  "entry7": {
-    "title": "Mixed Example",
-    "category": "Guidelines",
-    "datePublished": "2025-02-07",
-    "audience": ["Managers"],
-    "whatYouNeedToKnow": "Read carefully before proceeding.",
-    "actionRequired": [
-      "Review the new policy.",
-      "Provide feedback."
-    ],
-    "notes": "Policy updates will be enforced next month.",
-    "resources": [],
-    "whoToContact": []
-  },
-  "entry4": {
-    "title": "Mixed Example",
-    "category": "Guidelines",
-    "datePublished": "2025-02-07",
-    "audience": ["Managers"],
-    "whatYouNeedToKnow": "Read carefully before proceeding.",
-    "actionRequired": [
-      "Review the new policy.",
-      "Provide feedback."
-    ],
-    "notes": "Policy updates will be enforced next month.",
-    "resources": [],
-    "whoToContact": []
-  },
-  "entry5": {
-    "title": "Mixed Example",
-    "category": "Guidelines",
-    "datePublished": "2025-02-07",
-    "audience": ["Managers"],
-    "whatYouNeedToKnow": "Read carefully before proceeding.",
-    "actionRequired": [
-      "Review the new policy.",
-      "Provide feedback."
-    ],
-    "notes": "Policy updates will be enforced next month.",
-    "resources": [],
-    "whoToContact": []
-  },
-  "entry6": {
-    "title": "Mixed Example",
-    "category": "Guidelines",
-    "datePublished": "2025-02-07",
-    "audience": ["Managers"],
-    "whatYouNeedToKnow": "Read carefully before proceeding.",
-    "actionRequired": [
-      "Review the new policy.",
-      "Provide feedback."
-    ],
-    "notes": "Policy updates will be enforced next month.",
-    "resources": [],
-    "whoToContact": []
+    "whatYouNeedToKnow": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>",
+    "actionRequired": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>",
+    "notes": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>",
+    "resources": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>",
+    "whoToContact": "<p>Hello this is paragraph 1.</p><p>This is 2.</p><p>This is a <a href=\"http://google.com\">link</a> in a paragraph.</p><ul><li>This is a bullet point<ul><li>This one is indented</li></ul></li><li>This one is not but has a <a href=\"http://google.com\">link</a>.</li></ul><p>Back to Paragraph.</p>"
   }
 }
