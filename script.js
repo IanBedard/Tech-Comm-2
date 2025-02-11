@@ -11,20 +11,24 @@ $(document).ready(function () {
             populateMonthDropdown(data);
 
             const table = $('#entriesTable').DataTable({
-                data: Object.entries(data).map(([id, entry]) => [
-                    entry.title,
-                    entry.category,
-                    entry.datePublished,
-                    entry.audience.join(', '), // Keep raw for filtering
-                    `<button class="btn btn-info btn-sm go-btn" onclick="window.location.href='index.html?entry=${id}';">Go</button>
-                     <button class="btn btn-warning btn-sm share-btn" data-entry="${id}">Copy Link</button>
-                     <button class="btn btn-primary btn-sm view-btn" data-entry="${id}">View</button>`
-                ]),
+                data: Object.entries(data)
+                    .filter(([id, entry]) => 
+                        entry.title && entry.category && entry.datePublished && entry.audience && entry.audience.length > 0
+                    ) // Only include entries with required fields
+                    .map(([id, entry]) => [
+                        entry.title,
+                        entry.category,
+                        entry.datePublished,
+                        entry.audience.join(', '), 
+                        `<button class="btn btn-info btn-sm go-btn" onclick="window.location.href='index.html?entry=${id}';">Go</button>
+                         <button class="btn btn-warning btn-sm share-btn" data-entry="${id}">Copy Link</button>
+                         <button class="btn btn-primary btn-sm view-btn" data-entry="${id}">View</button>`
+                    ]),
                 columns: [
                     { title: "Title" },
                     { title: "Category" },
                     { title: "Date Published", type: "date", render: (data, type) => type === 'display' ? formatDate(data) : data },
-                    { title: "Audience" }, // Raw for filtering
+                    { title: "Audience" },
                     { title: "Actions", orderable: false }
                 ],
                 pageLength: 5,
@@ -35,6 +39,7 @@ $(document).ready(function () {
                     $audienceCell.html(audiences.map(a => formatAudienceLabel(a)).join(' '));
                 }
             });
+            
 
             $('#entriesTable tbody').on('click', 'button.view-btn', function () {
                 const tr = $(this).closest('tr');
@@ -70,32 +75,44 @@ $(document).ready(function () {
     function formatAudienceLabel(audience) {
         const audienceColors = {
             "Compensation advisors (CAs)": "label-success",  // Green
-            "US": "label-primary",  // Blue
-            "UK": "label-warning",  // Yellow
-            "EU": "label-info",     // Light Blue
-            "Global": "label-danger" // Red
+            "Change agents": "label-primary",  // Blue
+            "Human Resources (HR)": "label-danger" // Red
         };
-        const labelClass = audienceColors[audience] || "label-secondary"; // Default gray
+        const labelClass = audienceColors[audience] || "label-primary"; // Default gray
         return `<span class="label ${labelClass}">${audience}</span>`;
     }
 
     function formatChildRow(entry) {
-        return `
-            <div class="card card-body">
-                <p><strong>What You Need to Know:</strong></p> ${entry.whatYouNeedToKnow}
-                <p><strong>Action Required:</strong></p> ${entry.actionRequired}
-                <p><strong>Notes:</strong></p> ${entry.notes}
-                <p><strong>Resources:</strong></p> ${entry.resources || "None"}
-                <p><strong>Who to Contact:</strong></p> ${entry.whoToContact || "None"}
-            </div>
-        `;
+        let content = `<div class="card card-body">`;
+    
+        if (entry.whatYouNeedToKnow) {
+            content += `<p><strong>What You Need to Know:</strong></p>${entry.whatYouNeedToKnow}`;
+        }
+        if (entry.actionRequired) {
+            content += `<p><strong>Action Required:</strong></p>${entry.actionRequired}`;
+        }
+        if (entry.notes) {
+            content += `<p><strong>Notes:</strong></p>${entry.notes}`;
+        }
+        if (entry.resources) {
+            content += `<p><strong>Resources:</strong></p>${entry.resources}`;
+        }
+        if (entry.whoToContact) {
+            content += `<p><strong>Who to Contact:</strong></p>${entry.whoToContact}`;
+        }
+    
+        content += `</div>`;
+    
+        return content !== `<div class="card card-body"></div>` ? content : ''; // If all fields are missing, return empty string
     }
+    
 
     function formatDate(dateString) {
-        if (!dateString) return '';
+        if (!dateString) return 'Unknown';
         const date = new Date(dateString);
-        return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+        return isNaN(date) ? 'Invalid Date' : date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
     }
+    
     function filterTable(table) {
         const selectedAudiences = $('#audienceFilter').val();
         const selectedYear = $('#yearFilter').val();
@@ -103,9 +120,9 @@ $(document).ready(function () {
     
         let audienceRegex = '';
         if (selectedAudiences && selectedAudiences.length > 0) {
-            // Escape special regex characters and join audiences with a regex OR (|)
+            // Escape special regex characters, including parentheses
             audienceRegex = selectedAudiences
-                .map(a => a.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')) // Escape special characters
+                .map(a => a.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')) // Escapes all regex special characters
                 .join('|'); // Join with OR operator for multi-word audiences
         }
     
@@ -116,40 +133,50 @@ $(document).ready(function () {
         }
     
         if (selectedYear) {
-            dateRegex = `^${selectedYear}${dateRegex}`; // Matches "2024-02-"
+            dateRegex = `^${selectedYear}${dateRegex}`; // Matches "2025-02-"
         }
     
-        // Apply regex filtering
+        // Apply regex filtering (ensure audiences with parentheses are matched correctly)
         table.column(2).search(dateRegex, true, false).draw();
         table.column(3).search(audienceRegex, true, false).draw();
     }
     
     
+    
     function handleQueryParameter(data, table) {
         const params = new URLSearchParams(window.location.search);
         const entryParam = params.get('entry');
+    
         if (entryParam && data[entryParam]) {
             table.clear();
             const entry = data[entryParam];
+    
             table.row.add([
                 entry.title,
                 entry.category,
                 formatDate(entry.datePublished),
-                entry.audience.join(', '),
+                entry.audience ? entry.audience.join(', ') : "N/A",
                 `<button class="btn btn-warning btn-sm share-btn" data-entry="${entryParam}">Copy Link</button>
                  <button class="btn btn-primary btn-sm view-btn" data-entry="${entryParam}">View</button>`
             ]).draw();
-
+    
             const row = $('#entriesTable tbody').find(`button[data-entry="${entryParam}"]`).closest('tr');
             const tableRow = table.row(row);
-            tableRow.child(formatChildRow(entry)).show();
-            row.addClass('shown');
-            row.find('button.view-btn').text('Collapse');
-
+            const childContent = formatChildRow(entry);
+    
+            if (childContent) {
+                tableRow.child(childContent).show();
+                row.addClass('shown');
+                row.find('button.view-btn').text('Collapse');
+            } else {
+                row.find('button.view-btn').remove(); // Remove "View" button if no extra content
+            }
+    
             $('.dataTables_filter, .dataTables_length, .filters, .pagination').hide();
             $('#backButton').show();
         }
     }
+    
 
     function getUniqueAudiences(data) {
         return [...new Set(Object.values(data).flatMap(entry => entry.audience))].sort();
