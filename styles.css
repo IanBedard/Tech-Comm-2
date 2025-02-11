@@ -1,3 +1,12 @@
 .action-btn {
     width: 100px; /* Set a fixed width */
 }
+.custom-label { background: #D4A373; border-color: #9A6B43; }
+
+.custom-label { background: #4A90E2; border-color: #2C5EA6; }
+
+.custom-label { background: #A86BC8; border-color: #7A3F9E; }
+
+.custom-label { background: #5EBE92; border-color: #3A8061; }
+
+.custom-label { background: #F7A278; border-color: #C06050; }
